@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>To-Do List</h1>
+
+    <!-- Add Task Form -->
+    <form action="/add" method="post">
+        <input type="text" name="title" placeholder="Enter a new task" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        {% for task in tasks %}
+        <li>
+            <form action="/update/{{ task[0] }}" method="post" style="display: inline;">
+                <span>{{ task[1] }}</span>
+                <select name="status" onchange="this.form.submit()">
+                    <option value="Incomplete" {% if task[2] == "Incomplete" %}selected{% endif %}>Incomplete</option>
+                    <option value="Complete" {% if task[2] == "Complete" %}selected{% endif %}>Complete</option>
+                </select>
+            </form>
+            <a href="/delete/{{ task[0] }}" style="color: red; text-decoration: none;">[Delete]</a>
+            
+        </li>
+        <hr>
+        {% endfor %}
+    </ul>
+</body>
+</html>
